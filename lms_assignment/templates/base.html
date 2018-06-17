@@ -1,0 +1,82 @@
+{% load static %}<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}LMS assignment{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Clicker+Script" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontello-2f186091/css/fontello.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+    {% if user.is_authenticated and user.is_teacher %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/teachers.css' %}">
+    {% else %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/students.css' %}">
+    {% endif %}
+  </head>
+  <body style="font-family: 'Raleway', sans-serif;">
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand logo ml-5" href="{% url 'home' %}">LMS Assignment</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav ml-auto mr-5">
+     {% if user.is_authenticated %}
+           <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ user.username }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+        </div>
+      </li>
+    {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+    <div class="container my-4">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-sm-12">
+          <div class="card mb-3">
+            <div class="card-body">
+              {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endfor %}
+              {% block content %}
+              {% endblock %}
+            </div>
+          </div>
+         <footer class="text-center pb-3">
+            © 2018 Assignment for            
+            <a href="https://zenatix.com">Zenatix</a>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+              {% block javascript %}
+              {% endblock %}
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      })
+    </script>
+  </body>
+</html>

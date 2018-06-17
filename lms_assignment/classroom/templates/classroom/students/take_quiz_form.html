@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="progress mb-3">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%"></div>
+  </div>
+  <h2 class="mb-3">{{ quiz.name }}</h2>
+  <span>Answer will be automatically submit in <b id="timer">10</b> <b>seconds</b>.<hr></span>
+    
+  <p class="lead">{{ question.text }}</p>
+  <form method="post" id="form" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Next →</button>
+  </form>
+
+{% endblock %}
+{% block javascript %}
+window.onload = function() {
+// Onload event of Javascript
+// Initializing timer variable
+var x = 10;
+var y = document.getElementById("timer");
+// Display count down for 10s
+setInterval(function() {
+if (x <= 11 && x >= 1) {
+x--;
+y.innerHTML = '' + x + '';
+if (x == 1) {
+x = 11;
+}
+}
+}, 1000);
+// Form Submitting after 20s
+var auto_refresh = setInterval(function() {
+radiovalue();
+}, 10000);
+// Form submit function
+function submitform() {
+document.getElementById("form").submit();
+}
+
+function radiovalue() {
+var radioValue = $("input[name='answer']:checked").val();
+if(radioValue){
+submitform();
+}
+else{
+    var values = [];
+    var arr = [];
+    arr = {{correct_id}};
+    var delete_value = "";
+    // check option in right answers
+    $("#form input[type=radio]").each(function() {
+            if(!isNaN(this.value)) {
+                 values.push(this.value);
+                 for(var i=0; i<arr.length; i++){
+                 var name = arr[i];
+                 if(name == this.value){
+                  delete_value = name;
+                 }
+                    }
+             
+            }
+        });
+    var index = values.indexOf(delete_value.toString());
+    if (index > -1) {
+       values.splice(index, 1);
+    }
+    $(":radio[value="+values[0]+"]").attr('checked',true);
+ 
+    submitform();
+}
+}
+
+}; 
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="text-center">
+  <h2>Sign up for a free account<hr></h2>
+  <p class="lead">Select below the type of account you want to create</p>
+  <div class="container">
+  <div class="row align-items-start">
+    <div class="col">
+ <a href="{% url 'student_signup' %}" class="btn btn-student btn-lg" role="button">I'm a student</a>    </div>
+    
+  </div>
+  <div class="row align-items-center">
+    <div class="col">
+     <br>
+    </div>
+  
+  </div>
+  <div class="row align-items-end">
+    <div class="col">
+ <a href="{% url 'teacher_signup' %}" class="btn btn-teacher btn-lg" role="button">I'm a teacher</a>
+    </div>
+   </div>
+</div>
+
+  </div>
+{% endblock %}
